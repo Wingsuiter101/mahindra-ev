@@ -110,6 +110,15 @@ const SLIDE_HEROES: Record<number, { src: string; cls: string; priority?: boolea
     cls: "object-center",
     overlays: ["absolute inset-0 bg-gradient-to-b from-black/80 via-black/55 to-black/80"],
   },
+  25: {
+    src: "/last-slide.png",
+    cls: "object-center",
+    overlays: [
+      "absolute inset-0 bg-black/14",
+      "absolute inset-0 bg-gradient-to-b from-black/93 via-black/82 to-black/95",
+      "absolute inset-0 bg-gradient-to-r from-black/62 via-black/18 to-black/55",
+    ],
+  },
 };
 
 export default function PresentationDeck() {
