@@ -18,24 +18,26 @@ const calendar = [
   { month: "Month 5–12", event: "Monthly Community Events",     loc: "Experience centers",      scale: "150+ per event"  },
 ];
 
-const rowVariants = {
+import type { Variants } from "framer-motion";
+
+const rowVariants: Variants = {
   hidden: { opacity: 0, x: -18 },
-  show:   (i: number) => ({ opacity: 1, x: 0, transition: { delay: 0.12 + i * 0.07, duration: 0.4, ease: [0.22, 1, 0.36, 1] } }),
+  show:   (i: number) => ({ opacity: 1, x: 0, transition: { delay: 0.12 + i * 0.07, duration: 0.4, ease: "easeOut" } }),
 };
 
-const timelineVariants = {
+const timelineVariants: Variants = {
   hidden: { opacity: 0, x: 20 },
-  show:   (i: number) => ({ opacity: 1, x: 0, transition: { delay: 0.3 + i * 0.09, duration: 0.45, ease: [0.22, 1, 0.36, 1] } }),
+  show:   (i: number) => ({ opacity: 1, x: 0, transition: { delay: 0.3 + i * 0.09, duration: 0.45, ease: "easeOut" } }),
 };
 
-const dotVariants = {
+const dotVariants: Variants = {
   hidden:  { scale: 0, opacity: 0 },
-  show:    (i: number) => ({ scale: 1, opacity: 1, transition: { delay: 0.32 + i * 0.09, duration: 0.3, type: "spring" as const, stiffness: 400, damping: 20 } }),
+  show:    (i: number) => ({ scale: 1, opacity: 1, transition: { delay: 0.32 + i * 0.09, duration: 0.3, type: "spring", stiffness: 400, damping: 20 } }),
 };
 
-const lineVariants = {
-  hidden: { scaleY: 0, originY: 0 },
-  show:   { scaleY: 1, transition: { delay: 0.35, duration: 0.7, ease: "easeOut" } },
+const lineVariants: Variants = {
+  hidden: { scaleY: 0 },
+  show:   { scaleY: 1, transition: { delay: 0.35, duration: 0.7 } },
 };
 
 export default function ActivationEventsSlide() {
@@ -154,6 +156,7 @@ export default function ActivationEventsSlide() {
                 variants={lineVariants}
                 initial="hidden"
                 animate="show"
+                style={{ originY: 0 }}
                 className="absolute left-2.5 top-2 bottom-2 w-px bg-white/10"
               />
 
