@@ -9,7 +9,8 @@ const stages = [
     volume: "500,000+ impressions; 5–8% recall",
     goal: "40,000–50,000 website visits",
     message: "“What Moves You?” emotional hook; category intro; brand differentiation",
-    color: "from-white/5 to-transparent"
+    panel:
+      "border-white/12 bg-gradient-to-b from-neutral-950/92 via-black/88 to-black/90 backdrop-blur-md",
   },
   {
     stage: "Consideration",
@@ -19,7 +20,8 @@ const stages = [
     volume: "40,000–50,000 visitors; 25–30% active engagement",
     goal: "3,000–5,000 qualified leads",
     message: "Performance proof, competitive differentiation, financing options",
-    color: "from-white/10 to-transparent"
+    panel:
+      "border-white/12 bg-gradient-to-b from-neutral-950/92 via-black/88 to-black/90 backdrop-blur-md",
   },
   {
     stage: "Decision",
@@ -29,7 +31,8 @@ const stages = [
     volume: "3,000–5,000 leads; 60–70% test drive conversion",
     goal: "1,200–1,800 sales-ready prospects",
     message: "Customization, finance plans, exclusive launch offers",
-    color: "from-red-900/10 to-transparent"
+    panel:
+      "border-white/12 bg-gradient-to-b from-neutral-950/90 via-red-950/28 to-black/90 backdrop-blur-md",
   },
   {
     stage: "Purchase & Advocacy",
@@ -39,8 +42,9 @@ const stages = [
     volume: "1,200–1,800 prospects; 40–50% conversion to sales",
     goal: "480–900 actual sales; 60% net promoter advocacy",
     message: "Delivery joy, ownership welcome, community invitation",
-    color: "from-red-600/20 to-transparent"
-  }
+    panel:
+      "border-red-500/25 bg-gradient-to-b from-red-950/55 via-neutral-950/92 to-black/92 backdrop-blur-md",
+  },
 ];
 
 export default function EndToEndFunnelSlide() {
@@ -58,7 +62,7 @@ export default function EndToEndFunnelSlide() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 + i * 0.1 }}
-            className={`flex h-full flex-col border border-white/10 bg-gradient-to-b p-4 sm:p-6 ${stage.color}`}
+            className={`flex h-full flex-col p-4 sm:p-6 ${stage.panel}`}
           >
             <div className="flex justify-between items-start mb-6 pb-4 border-b border-white/10">
               <div>
@@ -68,7 +72,7 @@ export default function EndToEndFunnelSlide() {
               <div className="text-xs font-mono text-white/40 mt-1">{stage.timing}</div>
             </div>
             
-            <div className="space-y-5 flex-grow">
+            <div className="grow space-y-5">
               <div>
                 <div className="text-[10px] font-mono text-white/40 uppercase mb-1">Audience</div>
                 <div className="text-sm text-white/80 leading-snug">{stage.audience}</div>
@@ -77,11 +81,11 @@ export default function EndToEndFunnelSlide() {
                 <div className="text-[10px] font-mono text-white/40 uppercase mb-1">Channels</div>
                 <div className="text-sm text-white/80 leading-snug">{stage.channels}</div>
               </div>
-              <div className="p-3 bg-black/40 border border-white/5 rounded-sm">
+              <div className="rounded-sm border border-white/10 bg-black/60 p-3 backdrop-blur-sm">
                 <div className="text-[10px] font-mono text-white/40 uppercase mb-1">Expected Volume</div>
                 <div className="text-sm font-medium text-white/90">{stage.volume}</div>
               </div>
-              <div className="p-3 bg-white/5 border border-white/10 rounded-sm">
+              <div className="rounded-sm border border-white/12 bg-white/12 p-3 backdrop-blur-sm">
                 <div className="text-[10px] font-mono text-red-400 uppercase mb-1">Conversion Goal</div>
                 <div className="text-sm font-bold text-white">{stage.goal}</div>
               </div>

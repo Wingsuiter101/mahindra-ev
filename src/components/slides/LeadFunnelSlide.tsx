@@ -28,7 +28,7 @@ export default function LeadFunnelSlide() {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className="border border-white/10 bg-white/[0.02] p-5 sm:p-8"
+          className="border border-white/15 bg-black/35 p-5 backdrop-blur-xl sm:p-8"
         >
           <h4 className="text-xl font-medium mb-8">Awareness to Lead Conversion Flow</h4>
           
@@ -53,13 +53,14 @@ export default function LeadFunnelSlide() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3 }}
-          className="border border-white/10 bg-gradient-to-br from-indigo-900/10 to-transparent p-5 sm:p-8"
+          className="relative border border-white/15 bg-black/50 p-5 backdrop-blur-xl sm:p-8 before:pointer-events-none before:absolute before:inset-0 before:z-0 before:bg-linear-to-br before:from-black/45 before:via-indigo-950/35 before:to-black/55"
         >
+          <div className="relative z-10">
           <h4 className="text-xl font-medium mb-8">Lead Nurturing Sequences (3–6 months)</h4>
           
           <div className="space-y-6">
             {sequences.map((seq, i) => (
-              <div key={i} className="p-5 bg-white/[0.03] border border-white/5 rounded-sm hover:bg-white/5 transition-colors">
+              <div key={i} className="rounded-sm border border-white/10 bg-black/35 p-5 backdrop-blur-sm transition-colors hover:bg-black/45">
                 <div className="flex justify-between items-center mb-3">
                   <div className="font-medium text-white/90">{seq.name}</div>
                   <div className="text-xs font-mono text-red-500">{seq.timing}</div>
@@ -67,6 +68,7 @@ export default function LeadFunnelSlide() {
                 <div className="text-sm text-white/60 leading-relaxed">{seq.content}</div>
               </div>
             ))}
+          </div>
           </div>
         </motion.div>
       </div>

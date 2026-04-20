@@ -42,8 +42,13 @@ export default function TargetConsumerSlide() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 + i * 0.1 }}
-            className="group relative overflow-hidden border border-white/10 bg-black p-5 sm:p-6"
+            className={`group relative overflow-hidden border border-white/15 p-5 backdrop-blur-xl sm:p-6 ${
+              i === 1
+                ? "bg-black/45 before:pointer-events-none before:absolute before:inset-0 before:z-0 before:bg-linear-to-b before:from-black/55 before:via-black/45 before:to-black/60"
+                : "bg-black/40"
+            }`}
           >
+            <div className="relative z-10">
             <div className="pointer-events-none absolute right-0 top-0 p-4 text-5xl font-bold text-white/5 transition-colors group-hover:text-white/10">
               {segment.size}
             </div>
@@ -64,6 +69,7 @@ export default function TargetConsumerSlide() {
                 <div className="mb-1 text-xs font-mono uppercase text-white/40">Purchase Driver</div>
                 <div className="text-sm text-white/80 leading-relaxed">{segment.driver}</div>
               </div>
+            </div>
             </div>
           </motion.div>
         ))}
