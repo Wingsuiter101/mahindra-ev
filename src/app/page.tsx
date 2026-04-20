@@ -64,7 +64,7 @@ const slides = [
   BudgetSlide,             // 25
 ];
 
-// Sidebar section markers — each section = first slide in that chapter
+// Sidebar section markers
 const NAV_SECTIONS = [
   { label: "Cover",       first: 0,  range: [0, 1]   },
   { label: "Strategy",    first: 2,  range: [2, 3]   },
@@ -78,6 +78,39 @@ const NAV_SECTIONS = [
   { label: "Timeline",    first: 22, range: [22, 24] },
   { label: "Budget",      first: 25, range: [25, 25] },
 ];
+
+// Full-bleed heroes: rendered at page level so they cover the ENTIRE viewport
+// (header, footer, everything) — not constrained by the padded slide area.
+const SLIDE_HEROES: Record<number, { src: string; cls: string; priority?: boolean; overlays: string[] }> = {
+  0: {
+    src: "/hero-mahindra.png",
+    cls: "object-[65%_center] sm:object-center",
+    priority: true,
+    overlays: [
+      "absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent sm:via-black/60",
+      "absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60",
+      "absolute bottom-0 left-0 right-0 h-1/4 bg-gradient-to-t from-red-950/40 to-transparent",
+    ],
+  },
+  5: {
+    src: "/slide-5.png",
+    cls: "object-center",
+    overlays: ["absolute inset-0 bg-gradient-to-b from-black/75 via-black/55 to-black/80"],
+  },
+  12: {
+    src: "/slide-12.png",
+    cls: "object-center",
+    overlays: [
+      "absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/85",
+      "absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/70",
+    ],
+  },
+  18: {
+    src: "/slide-18.png",
+    cls: "object-center",
+    overlays: ["absolute inset-0 bg-gradient-to-b from-black/80 via-black/55 to-black/80"],
+  },
+};
 
 export default function PresentationDeck() {
   const [[page, direction], setPage] = useState([0, 0]);
@@ -114,6 +147,7 @@ export default function PresentationDeck() {
 
   const contextValue = useMemo(() => ({ page, total: slides.length, navigate }), [page, navigate]);
   const CurrentSlide = slides[page];
+  const hero = SLIDE_HEROES[page];
 
   const activeSection = NAV_SECTIONS.findIndex(
     (s) => page >= s.range[0] && page <= s.range[1]
@@ -126,31 +160,29 @@ export default function PresentationDeck() {
         {/* ── Default background ── */}
         <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_top_right,var(--tw-gradient-stops))] from-slate-900/40 via-black to-black" />
 
-        {/* ── Cover: full-bleed hero image behind everything ── */}
+        {/* ── Full-bleed hero images — absolute inset-0 at the main level
+            so they cover header, footer and all padding, edge to edge ── */}
         <AnimatePresence>
-          {page === 0 && (
+          {hero && (
             <motion.div
-              key="cover-hero"
+              key={`hero-${page}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.55 }}
               className="pointer-events-none absolute inset-0 z-[1]"
             >
-              {/* unoptimized: serve the PNG as-is so mobile isn’t stuck with an over-compressed WebP */}
               <Image
-                src="/hero-mahindra.png"
+                src={hero.src}
                 alt=""
                 fill
-                priority
                 unoptimized
-                sizes="100vw"
-                className="object-cover object-[65%_center] sm:object-center"
+                priority={!!hero.priority}
+                className={`object-cover ${hero.cls}`}
               />
-              {/* Subtle gradients so the image clearly spans edge-to-edge */}
-              <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent sm:via-black/60" />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
-              <div className="absolute bottom-0 left-0 right-0 h-1/4 bg-gradient-to-t from-red-950/40 to-transparent" />
+              {hero.overlays.map((cls, i) => (
+                <div key={i} className={cls} />
+              ))}
             </motion.div>
           )}
         </AnimatePresence>
@@ -182,11 +214,7 @@ export default function PresentationDeck() {
         </header>
 
         {/* ── Slide viewport ── */}
-        {/* flex-1 + h-0 trick: flex-1 makes it grow, h-0 gives a concrete
-            computed height that children can reference with h-full / min-h-full */}
         <div className="relative z-10 h-0 flex-1 overflow-x-clip px-4 pr-8 sm:px-10 sm:pr-14 md:px-14 md:pr-20">
-          {/* This div is the positioned containing block for the absolute Slide.
-              h-full resolves cleanly against the parent's concrete h-0+flex-1 height. */}
           <div className="relative mx-auto h-full w-full max-w-7xl">
             <AnimatePresence initial={false} custom={direction}>
               <Slide key={page} direction={direction}>
@@ -208,12 +236,9 @@ export default function PresentationDeck() {
                 onClick={() => navigate(section.first)}
                 className="group pointer-events-auto relative flex items-center justify-end"
               >
-                {/* Label tooltip — slides in from right on hover */}
                 <span className="mr-2 origin-right scale-x-0 select-none whitespace-nowrap rounded-sm bg-black/80 px-2 py-0.5 text-[9px] font-mono uppercase tracking-widest text-white/70 opacity-0 backdrop-blur-sm transition-all duration-200 group-hover:scale-x-100 group-hover:opacity-100 sm:text-[10px]">
                   {section.label}
                 </span>
-
-                {/* Dot */}
                 <span
                   className={`block rounded-full transition-all duration-300 ${
                     isActive
@@ -228,7 +253,6 @@ export default function PresentationDeck() {
 
         {/* ── Footer ── */}
         <footer className="relative z-50 flex shrink-0 items-center justify-between gap-3 px-6 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-3 sm:px-10 sm:gap-6 sm:pb-[max(1.5rem,env(safe-area-inset-bottom))] md:px-14">
-          {/* Progress */}
           <div className="flex min-w-0 flex-1 items-center gap-3 sm:gap-4">
             <div className="shrink-0 font-mono text-[10px] tracking-widest text-white/40 sm:text-xs">
               {String(page + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
@@ -241,7 +265,6 @@ export default function PresentationDeck() {
             </div>
           </div>
 
-          {/* Pill nav */}
           <div className="flex shrink-0 overflow-hidden rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-xl">
             <button
               type="button"
@@ -253,7 +276,6 @@ export default function PresentationDeck() {
               <ArrowUp className="size-[15px] text-white/55 transition-colors group-hover:text-white sm:size-4" strokeWidth={1.75} />
             </button>
 
-            {/* Centre divider with sliding red position dot */}
             <div className="relative flex w-px self-stretch bg-white/10">
               <div
                 className="absolute left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-red-500 shadow-[0_0_6px_2px_rgba(239,68,68,0.55)] transition-all duration-500 ease-out"
