@@ -15,6 +15,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Mahindra EV SUVs Premium Launch Strategy",
   description: "A premium Next.js Tailwind Framer Motion presentation deck for Mahindra EV SUVs.",
+  icons: {
+    icon: [
+      { url: "/Mahindra-Logo.png", type: "image/png" },
+    ],
+    apple: "/Mahindra-Logo.png",
+    shortcut: "/Mahindra-Logo.png",
+  },
 };
 
 export const viewport: Viewport = {
